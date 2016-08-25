@@ -11,6 +11,7 @@
         android:background="@drawable/shadow" />
 
     <LinearLayout
+        android:id="@+id/bottomDialog_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white"
@@ -36,6 +37,7 @@
                 android:id="@+id/bottomDialog_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -44,9 +46,10 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/bottomDialog_content_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:paddingTop="10dp">
 
             <TextView
                 android:id="@+id/bottomDialog_content"
@@ -69,9 +72,10 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/bottomDialog_buttons_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:paddingTop="20dp"
             android:gravity="center_vertical|end"
             android:orientation="horizontal">
 

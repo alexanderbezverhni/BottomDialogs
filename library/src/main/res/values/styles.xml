@@ -10,9 +10,18 @@
         <item name="android:windowAnimationStyle">@style/BottomDialogsAnimation</item>
     </style>
 
+    <style name="BottomDialogs.OnTop">
+        <item name="android:windowAnimationStyle">@style/BottomDialogsAnimationOnTop</item>
+    </style>
+
     <style name="BottomDialogsAnimation">
         <item name="android:windowEnterAnimation">@anim/sheet_show</item>
         <item name="android:windowExitAnimation">@anim/sheet_hide</item>
+    </style>
+
+    <style name="BottomDialogsAnimationOnTop">
+        <item name="android:windowEnterAnimation">@anim/sheet_show_on_top</item>
+        <item name="android:windowExitAnimation">@anim/sheet_hide_on_top</item>
     </style>
 
     <style name="Button" parent="Button.Base" />

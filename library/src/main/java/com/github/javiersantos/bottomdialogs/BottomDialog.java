@@ -11,6 +11,7 @@ import android.support.annotation.UiThread;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -43,7 +44,8 @@ public class BottomDialog {
 
     @UiThread
     private Dialog initBottomDialog(final Builder builder) {
-        final Dialog bottomDialog = new Dialog(builder.context, R.style.BottomDialogs);
+        final boolean isOnTop = builder.isOnTop;
+        final Dialog bottomDialog = new Dialog(builder.context, isOnTop ? R.style.BottomDialogs_OnTop : R.style.BottomDialogs);
         View view = builder.activity.getLayoutInflater().inflate(R.layout.library_bottom_dialog, null);
 
         ImageView vIcon = (ImageView) view.findViewById(R.id.bottomDialog_icon);
@@ -52,6 +54,10 @@ public class BottomDialog {
         FrameLayout vCustomView = (FrameLayout) view.findViewById(R.id.bottomDialog_custom_view);
         Button vNegative = (Button) view.findViewById(R.id.bottomDialog_cancel);
         Button vPositive = (Button) view.findViewById(R.id.bottomDialog_ok);
+        View vShadow = view.findViewById(R.id.shadow);
+        ViewGroup container = (ViewGroup) view.findViewById(R.id.bottomDialog_container);
+        ViewGroup contentContainer = (ViewGroup) view.findViewById(R.id.bottomDialog_content_container);
+        ViewGroup buttonsContainer = (ViewGroup) view.findViewById(R.id.bottomDialog_buttons_container);
 
         if (builder.icon != null) {
             vIcon.setVisibility(View.VISIBLE);
@@ -59,6 +65,7 @@ public class BottomDialog {
         }
 
         if (builder.title != null) {
+            vTitle.setVisibility(View.VISIBLE);
             vTitle.setText(builder.title);
         }
 
@@ -69,6 +76,12 @@ public class BottomDialog {
         if (builder.customView != null) {
             vCustomView.addView(builder.customView);
             vCustomView.setPadding(builder.customViewPaddingLeft, builder.customViewPaddingTop, builder.customViewPaddingRight, builder.customViewPaddingBottom);
+
+            // fill the container view with the custom view
+            container.setPadding(0, 0, 0, 0);
+            contentContainer.setVisibility(View.GONE);
+            buttonsContainer.setVisibility(View.GONE);
+            vShadow.setVisibility(View.GONE);
         }
 
         if (builder.btn_positive != null) {
@@ -100,7 +113,7 @@ public class BottomDialog {
         bottomDialog.setContentView(view);
         bottomDialog.setCancelable(builder.isCancelable);
         bottomDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        bottomDialog.getWindow().setGravity(Gravity.BOTTOM);
+        bottomDialog.getWindow().setGravity(isOnTop ? Gravity.TOP : Gravity.BOTTOM);
 
         return bottomDialog;
     }
@@ -126,6 +139,7 @@ public class BottomDialog {
 
         // Other options
         protected boolean isCancelable;
+        protected boolean isOnTop; // controverts "BottomDialog" naming, but whatever..
 
         public Builder(@NonNull Context context) {
             this.activity = (Activity) context;
@@ -195,6 +209,11 @@ public class BottomDialog {
 
         public Builder setCancelable(boolean cancelable) {
             this.isCancelable = cancelable;
+            return this;
+        }
+
+        public Builder setOnTop(boolean isOnTop) {
+            this.isOnTop = isOnTop;
             return this;
         }
 
